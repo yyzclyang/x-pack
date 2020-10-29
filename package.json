@@ -1,0 +1,11 @@
+{
+  "name": "x-pack",
+  "version": "0.0.1",
+  "description": "x-pack",
+  "main": "index.js",
+  "author": "yyzclyang",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.1.2"
+  }
+}
