@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "yyzclyang",
   "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js"
+  },
   "devDependencies": {
     "prettier": "^2.1.2"
   }
