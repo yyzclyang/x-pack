@@ -30,6 +30,7 @@ function createBundle(graphs) {
   `;
 
   const bundlePath = path.resolve(__dirname, '../dist/bundle.js');
+  fs.mkdirSync(path.dirname(bundlePath), { recursive: true });
   fs.writeFileSync(bundlePath, bundleContent);
 }
 
