@@ -1,22 +1,31 @@
 const fs = require('fs');
+const path = require('path');
 const babylon = require('babylon');
 const traverse = require('babel-traverse').default;
 const babel = require('babel-core');
 
-let ID = 0;
-function createAsset(filepath) {
-  const fileContent = fs.readFileSync(filepath, 'utf-8');
-
+function createAsset(filePath) {
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const fileRelativePath = path.relative(process.cwd(), filePath);
+  const dependencies = [];
   // 将读取到的文件转成抽象语法树
   const ast = babylon.parse(fileContent, { sourceType: 'module' });
-
-  const dependencies = [];
 
   // 处理抽象语法树
   traverse(ast, {
     // 只针对导入依赖
     ImportDeclaration: ({ node }) => {
-      dependencies.push(node.source.value);
+      const importPath = node.source.value;
+      const dependencyFilePath = path.resolve(
+        path.dirname(filePath),
+        importPath
+      );
+      const dependencyFileRelativePath = path.relative(
+        process.cwd(),
+        dependencyFilePath
+      );
+
+      dependencies.push([importPath, dependencyFileRelativePath]);
     }
   });
 
@@ -25,13 +34,12 @@ function createAsset(filepath) {
     presets: ['env']
   });
 
-  const id = ID++;
-
   return {
-    id,
-    filepath: filepath,
-    dependencies,
-    code: `function (require, exports, module) { ${code} }`
+    key: fileRelativePath,
+    dependencies: dependencies,
+    code: `function (require, exports, module) {
+      ${code}
+    }`
   };
 }
 
