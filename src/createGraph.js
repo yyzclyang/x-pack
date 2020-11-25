@@ -1,22 +1,22 @@
 const path = require('path');
 const { createAsset } = require('./createAsset');
 
-function createGraph(filename) {
-  const asset = createAsset(filename);
-  const queue = [asset];
+function createGraph(filePath) {
+  const asset = createAsset(filePath);
+  const codeGraphs = [asset];
 
-  for (const asset of queue) {
-    const dirname = path.dirname(asset.filepath);
-    asset.mapping = {};
-    asset.dependencies.forEach(filename => {
-      const absolutePath = path.resolve(dirname, filename);
-      const dependenceAsset = createAsset(absolutePath);
-      asset.mapping[filename] = dependenceAsset.id;
-      queue.push(dependenceAsset);
+  for (const codeAsset of codeGraphs) {
+    codeAsset.dependencies.forEach(([, dependencyFileRelativePath]) => {
+      const dependencyFileAbsolutePath = path.resolve(
+        process.cwd(),
+        dependencyFileRelativePath
+      );
+      const dependenceAsset = createAsset(dependencyFileAbsolutePath);
+      codeGraphs.push(dependenceAsset);
     });
   }
 
-  return queue;
+  return codeGraphs;
 }
 
 module.exports = { createGraph };
