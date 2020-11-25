@@ -1,14 +1,15 @@
 const fs = require('fs');
+const path = require('path');
 const { getDependencies } = require('./getDependencies');
 
-let ID = 0;
-function createAsset(filepath) {
-  const fileContent = fs.readFileSync(filepath, 'utf-8');
-  const id = ID++;
+function createAsset(filePath) {
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+  const fileRelativePath = path.relative(process.cwd(), filePath);
+
   return {
-    id,
-    filepath: filepath,
-    dependencies: getDependencies(fileContent),
+    key: fileRelativePath,
+    dependencies: getDependencies(filePath, fileContent),
     code: `function (require, exports, module) {
       ${fileContent}
     }`
