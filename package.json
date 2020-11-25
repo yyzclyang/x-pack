@@ -6,7 +6,7 @@
   "author": "yyzclyang",
   "license": "MIT",
   "scripts": {
-    "common": "node src/index.js",
+    "common": "node src/index.js ./example/index.js",
     "es6": "node src/es6/index.js"
   },
   "dependencies": {

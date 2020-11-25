@@ -1,4 +1,10 @@
 const { createGraph } = require('./createGraph');
 const { createBundle } = require('./createbundle');
 
-createBundle(createGraph('./example/index.js'));
+const args = process.argv;
+
+if (args.length < 3) {
+  return;
+}
+
+createBundle(createGraph(args[2]));
