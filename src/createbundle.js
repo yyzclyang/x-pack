@@ -24,19 +24,22 @@ function createBundle(codeGraphs) {
 
   const bundleContent = `
   (function (modulesGraphs) {
-    function requireContentToPath() {}
-
+    const modules = {};
     function exec(index) {
+      if(modules[index]) {
+        return modules[index];
+      }
       const { dependencies, code } = modulesGraphs[index];
       const module = { exports: {} };
+      modules[index] = module.exports;
 
       function require(path) {
         // 根据模块路径，返回模块执行的结果
         return exec(dependencies[path]);
       }
-  
+
       code && code(require, module.exports, module);
-  
+
       return module.exports;
     }
   

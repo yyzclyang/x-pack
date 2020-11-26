@@ -7,6 +7,14 @@ function createGraph(filePath) {
 
   for (const codeAsset of codeGraphs) {
     codeAsset.dependencies.forEach(([, dependencyFileRelativePath]) => {
+      if (
+        codeGraphs.find(
+          codeAsset => codeAsset.key === dependencyFileRelativePath
+        )
+      ) {
+        return;
+      }
+
       const dependencyFileAbsolutePath = path.resolve(
         process.cwd(),
         dependencyFileRelativePath
