@@ -7,6 +7,7 @@ function createGraph(filePath) {
 
   for (const codeAsset of codeGraphs) {
     codeAsset.dependencies.forEach(([, dependencyFileRelativePath]) => {
+      // 如果已处理的文件 asset 中有某一项的 key 等于当前模块依赖的相对路径，说明之前处理过
       if (
         codeGraphs.find(
           codeAsset => codeAsset.key === dependencyFileRelativePath

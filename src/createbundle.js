@@ -26,6 +26,7 @@ function createBundle(codeGraphs) {
   (function (modulesGraphs) {
     const modules = {};
     function exec(index) {
+      // 处理循环依赖
       if(modules[index]) {
         return modules[index];
       }
